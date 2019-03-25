@@ -1,0 +1,19 @@
+.container {
+    height: 300px;
+    width: 100px;
+}
+
+#display {
+    width: 100%;
+    font-size: 72px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.buttons {
+    text-align: center;
+}
+
+#lapHistory {
+    text-align: center;
+}
