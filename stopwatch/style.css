@@ -33,15 +33,15 @@ header h1 {
 
 .button {
     display: inline-block;
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     margin: 10px;
     text-align: center;
     font-size: 10px;
     font-weight: bold;
+    border: 1px #000000 solid;
     vertical-align: middle;
     border-radius: 50%;
-    border: none;
 }
 
 .button:focus {
@@ -51,19 +51,45 @@ header h1 {
 .button-start {
     color: #23FE01;
     background-color: rgba(73, 165, 67, 0.25);
+    box-shadow: 0 0 0 2px rgba(73, 165, 67, 0.25);
 }
 
 .button-stop {
     color: #ff0000;
     background-color: rgba(255, 0, 0, 0.25);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.25);
 }
 
 .button-active {
     color: #ffffff;
     background-color: #cccccc;
+    box-shadow: 0 0 0 2px #cccccc;
 }
 
 .button-disabled {
     color: rgba(144, 144, 144, 0.25);
     background-color: rgba(144, 144, 144, 0.25);
+    box-shadow: 0 0 0 2px rgba(144, 144, 144, 0.25);
+}
+
+.lap-history {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-top: 1px rgba(144, 144, 144, 0.25) solid;
+}
+
+.lap-table {
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.lap-name {
+    width: 50%;
+    text-align: left;
+}
+
+.lap-time {
+    width: 50%;
+    text-align: right;
 }

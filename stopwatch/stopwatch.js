@@ -15,6 +15,10 @@
         let secs = elem.querySelector('span.seconds');
         let centis = elem.querySelector('span.centiseconds');
 
+        //display
+        let lapHistory = elem.querySelector('div.lap-history');
+        let currentLapItem, currentLapName, currentLapTimer = 0;
+
         // variables
         let startStatus = false;
         let lappedStatus = false;
@@ -25,27 +29,64 @@
         let lastLappedTime = 0;
         let interval = 0;
 
+        let lapPrefix = 'Lap ';
+        let lapNumber = 1;
+
+        // format displayed timer
+        // 1 -> 01, 5 -> 05, 55 -> 55
         function format(n) {
             return ('00' + n).substr(-2);
         }
 
+        // update normal & lap timers
         function update() {
+
+            // get current datetime
             let now = new Date().getTime();
+
+            // calcurate previous updated time and current datetime
             let difference = now - lastUpdateTime;
-
             currentTimer += difference;
-            // console.log(currentTimer);
-            currentDatetime = new Date(currentTimer);
 
-            mins.innerHTML = format(currentDatetime.getMinutes());
-            secs.innerHTML = format(currentDatetime.getSeconds());
-            centis.innerHTML = format(Math.floor(currentDatetime.getMilliseconds() / 10));
+            let currentTime = new Date(currentTimer);
+            let currentLapTime = currentTimer - lastLappedTime;
+
+            // update current timer display
+            mins.innerHTML = format(currentTime.getMinutes());
+            secs.innerHTML = format(currentTime.getSeconds());
+            centis.innerHTML = format(Math.floor(currentTime.getMilliseconds() / 10));
+
+            currentLapTimer.innerHTML = currentLapTime;
+
+            // console.log(currentLapTime);
 
             lastUpdateTime = now;
         }
 
         function start() {
             if (!interval) {
+                if (!lapHistory.querySelector('table.lap-items')) {
+                    console.log("There is no lap items! Let's create one!");
+                    let tableForLap = document.createElement('table');
+                    tableForLap.className = 'lap-items';
+
+                    let currentLapBody = document.createElement('tbody');
+                    currentLapItem = document.createElement('tr');
+
+                    currentLapName = document.createElement('td');
+                    currentLapName.innerHTML = lapPrefix + lapNumber;
+                    currentLapTimer = document.createElement('td');
+
+                    currentLapItem.appendChild(currentLapName);
+                    currentLapItem.appendChild(currentLapTimer);
+
+                    currentLapBody.appendChild(currentLapItem);
+                    tableForLap.appendChild(currentLapBody);
+
+                    lapHistory.appendChild(tableForLap);
+                    lapHistory.className = 'lap-table';
+                }
+
                 lastUpdateTime = new Date().getTime();
                 interval = setInterval(update, 1);
                 startStatus = true;
@@ -99,12 +140,32 @@
             console.log('---- reset ----');
         }
 
-
         function lap() {
             let lapTime = currentTimer - lastLappedTime;
             lastLappedTime = currentTimer;
             let lapDatetime = new Date(lapTime);
-            console.log(lapDatetime.getMinutes().toString() + ':' + lapDatetime.getSeconds().toString() + '.' + Math.floor(lapDatetime.getMilliseconds() / 10).toString());
+            // console.log(lapDatetime.getMinutes().toString() + ':' + lapDatetime.getSeconds().toString() + '.' + Math.floor(lapDatetime.getMilliseconds() / 10).toString());
+
+            if (document.querySelector('table.lap-items')) {
+                let items = document.querySelector('table.lap-items');
+                let body = items.querySelector('tbody');
+
+                let tableRow = document.createElement('tr');
+                let tableDataForLapName = document.createElement('td');
+                let tableDataForLapTime = document.createElement('td');
+
+                tableDataForLapName.innerHTML = lapPrefix + lapNumber;
+                lapNumber++;
+                tableDataForLapTime.innerHTML = lapTime;
+
+                tableRow.appendChild(tableDataForLapName);
+                tableRow.appendChild(tableDataForLapTime);
+                // body.appendChild(tableRow);
+                // targetElement.insertAdjacentElement(position, element);
+                currentLapItem.insertAdjacentElement('afterend', tableRow);
+                currentLapName.innerHTML = lapPrefix + lapNumber;
+            }
+
             lappedStatus = true;
         }
 
