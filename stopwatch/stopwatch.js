@@ -49,14 +49,15 @@
             currentTimer += difference;
 
             let currentTime = new Date(currentTimer);
-            let currentLapTime = currentTimer - lastLappedTime;
+            let currentLapTime = new Date(currentTimer - lastLappedTime);
+
 
             // update current timer display
             mins.innerHTML = format(currentTime.getMinutes());
             secs.innerHTML = format(currentTime.getSeconds());
             centis.innerHTML = format(Math.floor(currentTime.getMilliseconds() / 10));
 
-            currentLapTimer.innerHTML = currentLapTime;
+            currentLapTimer.innerHTML = format(currentLapTime.getMinutes()) + ':' + format(currentLapTime.getSeconds()) + '.' + format(Math.floor(currentLapTime.getMilliseconds() / 10));
 
             // console.log(currentLapTime);
 
@@ -137,6 +138,8 @@
             mins.innerHTML = '00';
             secs.innerHTML = '00';
             centis.innerHTML = '00';
+            lapNumber = 1;
+            while (lapHistory.firstChild) lapHistory.removeChild(lapHistory.firstChild);
             console.log('---- reset ----');
         }
 
@@ -146,6 +149,7 @@
             let lapDatetime = new Date(lapTime);
             // console.log(lapDatetime.getMinutes().toString() + ':' + lapDatetime.getSeconds().toString() + '.' + Math.floor(lapDatetime.getMilliseconds() / 10).toString());
 
+            let lapStr = format(lapDatetime.getMinutes()) + ':' + format(lapDatetime.getSeconds()) + '.' + format(Math.floor(lapDatetime.getMilliseconds() / 10));
             if (document.querySelector('table.lap-items')) {
                 let items = document.querySelector('table.lap-items');
                 let body = items.querySelector('tbody');
@@ -156,7 +160,7 @@
 
                 tableDataForLapName.innerHTML = lapPrefix + lapNumber;
                 lapNumber++;
-                tableDataForLapTime.innerHTML = lapTime;
+                tableDataForLapTime.innerHTML = lapStr;
 
                 tableRow.appendChild(tableDataForLapName);
                 tableRow.appendChild(tableDataForLapTime);
